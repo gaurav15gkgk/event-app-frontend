@@ -1,5 +1,5 @@
 //to fetch the user by its userId
- const read = (userId, token) => {
+ export const read = (userId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
         method: "GET",
         headers: {
@@ -15,7 +15,7 @@
 };
 
 //to delete the user
- const remove = (userId, token) => {
+ export const remove = (userId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
         method: "DELETE",
         headers: {
@@ -31,7 +31,7 @@
 };
 
 //to update the user
-const update = (userId, token, user) => {
+export const update = (userId, token, user) => {
 
     return fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
         method: "PUT",
@@ -48,7 +48,7 @@ const update = (userId, token, user) => {
 };
 
 // to updateUser in the jwt token
-const updateUser = (user, next) => {
+export const updateUser = (user, next) => {
     if (typeof window !== "undefined") {
         if (localStorage.getItem("jwt")) {
             let auth = JSON.parse(localStorage.getItem("jwt"));
@@ -59,9 +59,3 @@ const updateUser = (user, next) => {
     }
 };
 
-exports = {
-    read,
-    remove,
-    update,
-    updateUser
-}

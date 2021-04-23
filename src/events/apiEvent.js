@@ -1,5 +1,5 @@
 //to create an Event
-const create = (userId, token, event) => {
+export const create = (userId, token, event) => {
     return fetch(`${process.env.REACT_APP_API_URL}/event/new/${userId}`, {
         method: "POST",
         headers: {
@@ -29,7 +29,7 @@ const list = () => {
 };
 
 // to show single event when clicked on read more
-const singleEventfetch = eventId => {
+export const singleEventfetch = eventId => {
    
     return fetch(`${process.env.REACT_APP_API_URL}/events/${eventId}`, {
         method: "GET"
@@ -41,7 +41,7 @@ const singleEventfetch = eventId => {
 };
 
 //to delete the user from the data base
-const remove = (eventId, token) => {
+export const remove = (eventId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/event/${eventId}`, {
         method: "DELETE",
         headers: {
@@ -57,7 +57,7 @@ const remove = (eventId, token) => {
 };
 
 //to update the post 
- const update = (eventId, token, event) => { 
+export  const update = (eventId, token, event) => { 
     return fetch(`${process.env.REACT_APP_API_URL}/event/${eventId}`, {
         method: "PUT",
         headers: {
@@ -74,7 +74,7 @@ const remove = (eventId, token) => {
 };
 
 //to get all the events from a user
- const listByUser = (userId, token) => {
+export  const listByUser = (userId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/events/by/${userId}`, {
         method: "GET",
         headers: {
@@ -89,11 +89,3 @@ const remove = (eventId, token) => {
         .catch(err => console.log(err));
 };
 
-export {
-    create,
-    list,
-    singleEventfetch,
-    remove,
-    update,
-    listByUser
-}
