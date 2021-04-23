@@ -17,7 +17,7 @@ export const create = (userId, token, event) => {
 };
 
 //to get all the events from the database
-const list = () => {
+export const list = () => {
     return fetch(`${process.env.REACT_APP_API_URL}/events`, {
         method: "GET"
     })
