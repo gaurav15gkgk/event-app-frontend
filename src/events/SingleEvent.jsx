@@ -1,10 +1,13 @@
 //imported some Modules
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 //imported some components or functions
 import { isAuthenticated } from '../auth';
-import { singleEventfetch, remove } from './apiEvent';
+import {  remove } from './apiEvent';
+import { fetchCurrentEvent  , clearCurrentEvent} from '../redux/actions/eventActions'
 
 //SingleEvent Class Component
 class SingleEvent extends Component {
@@ -17,8 +20,11 @@ class SingleEvent extends Component {
     // to fetch the single event by its eventId
     componentDidMount = () => {
         const eventId = this.props.match.params.eventId;
-        console.log(eventId)
-        singleEventfetch(eventId).then(data => {
+
+        this.props.fetchCurrentEvent(eventId)
+        
+
+       /* singleEventfetch(eventId).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -27,7 +33,9 @@ class SingleEvent extends Component {
                 });
             }
         });
-    };
+    
+     */
+    }
 
     //Delete post fuction
     deletePost = () => {
@@ -82,7 +90,7 @@ class SingleEvent extends Component {
 
                         <div className="column">
                             <div className="buttons">
-                                <Link to={`/`} className=" mt-2 button is-rounded is-focused is-dark">
+                                <Link to={`/`} className=" mt-2 button is-rounded is-focused is-dark" onClick = {() => this.props.clearCurrentEvent()}>
                                     Back to posts
                                 </Link>
 
@@ -106,7 +114,8 @@ class SingleEvent extends Component {
 
     
     render() {
-        const { event, redirectToHome, redirectToSignin,  } = this.state;
+        const {  redirectToHome, redirectToSignin,  } = this.state;
+        const event = this.props.currentEvent
         if (redirectToHome) {
             return <Redirect to={`/`} />;
         } else if (redirectToSignin) {
@@ -125,4 +134,17 @@ class SingleEvent extends Component {
     }
 }
 
-export default SingleEvent;
+SingleEvent.propTypes = {
+    fetchCurrentEvents: PropTypes.func.isRequired,
+    clearCurrentEvent: PropTypes.func.isRequired,
+    currentEvent: PropTypes.object.isRequired
+    
+}
+
+const mapStatetoProps = state => ({
+    currentEvent: state.CurrentEvent.currentEvent
+})
+
+export default connect(mapStatetoProps, { fetchCurrentEvent, clearCurrentEvent })(SingleEvent);
+
+

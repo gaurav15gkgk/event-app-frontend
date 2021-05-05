@@ -17,7 +17,6 @@ class EditProfile extends Component {
       password: "",
       redirectToProfile: false,
       error: "",
-      
       loading: false,
       about: ""
     };

@@ -22,7 +22,8 @@ class Profile extends Component {
     
     // to fetch user data by its userId
     init = userId => {
-        const token = isAuthenticated().token;
+        const token = isAuthenticated().payload.token;
+        
         read(userId, token).then(data => {
             if (data.error) {
                 this.setState({ redirectToSignin: true });
@@ -36,7 +37,8 @@ class Profile extends Component {
     //to get userid from URL and call init function
     componentDidMount() {
         const userId = this.props.match.params.userId;
-        this.init(userId);
+        console.log(userId)
+        this.init(userId)
     }
 
     //it will invoke when component recieve props
@@ -66,12 +68,12 @@ class Profile extends Component {
                 <h2 className="title is-size-3"><strong>Profile</strong></h2>
                 <div className="columns">
                     <div className="column">
-                        <div className="is-size-5">Hello <strong>{isAuthenticated().user.name}</strong></div>
-                        <div className="is-size-5">Email: <strong>{isAuthenticated().user.email}</strong></div>
+                        <div className="is-size-5">Hello <strong>{isAuthenticated().payload.user.name}</strong></div>
+                        <div className="is-size-5">Email: <strong>{isAuthenticated().payload.user.email}</strong></div>
                     </div>
                     <div className="column">
-                    {isAuthenticated().user &&
-                            isAuthenticated().user._id === user._id && (
+                    {isAuthenticated().payload.user &&
+                            isAuthenticated().payload.user._id === user._id && (
                                 <div className="buttons">
                                    
                                     <DeleteUser userId = { user._id} />

@@ -1,9 +1,14 @@
 //required some modules
 import React ,{ Fragment } from 'react'
 import { Link, withRouter  } from 'react-router-dom';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
 
 ////Required some components
-import { logout, isAuthenticated} from "../auth"
+import {  isAuthenticated} from "../auth"
+import {ClearUser } from "../redux/actions/userActions"
+import { clearCurrentEvent } from "../redux/actions/eventActions"
 
 //Navbar class component
  class  Navbar extends React.Component {
@@ -32,14 +37,15 @@ import { logout, isAuthenticated} from "../auth"
                             {isAuthenticated() && (
                                 <Fragment>
                                         <Link
-                                            to={`/user/${isAuthenticated().user._id}`}
+                                            to={`/user/${isAuthenticated().payload.user._id}`}
                                             className="navbar-item is-size-5 "
                                             
                                         >
-                                            {`${isAuthenticated().user.name}'s profile`}
+                                            {`${isAuthenticated().payload.user.name}'s profile`}
                                         </Link>
                                     
-                                        <span onClick={() => {logout() 
+                                        <span onClick={() => { this.props.ClearUser()
+                                                                this.props.clearCurrentEvent()
                                                                 this.props.history.push('/')
                                                             }}             
                                             className="navbar-item is-size-5 " style = {{ cursor: 'pointer'}}>
@@ -71,4 +77,12 @@ import { logout, isAuthenticated} from "../auth"
     
 }
 
-export default withRouter(Navbar)
+Navbar.propTypes = {
+    fetchEvents: PropTypes.func.isRequired, 
+    clearCurrentEvent: PropTypes.func.isRequired
+}
+const mapStatetoProps = () => ({
+    
+})
+
+export default  connect( mapStatetoProps, { ClearUser, clearCurrentEvent })(withRouter(Navbar))

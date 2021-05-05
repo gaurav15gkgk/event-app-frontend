@@ -39,14 +39,14 @@ const authenticate = (jwt, next) => {
 };
 
 //for loggin out the user
- const logout = next => {
+ const logout = next => { 
     if (typeof window !== 'undefined') 
         localStorage.removeItem('jwt');
     return fetch(`${process.env.REACT_APP_API_URL}/logout`, {
         method: 'GET'
     })
         .then(response => {
-            console.log('signout', response);
+           
             return response.json();
         })
         .catch(err => console.log(err));

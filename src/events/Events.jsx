@@ -1,31 +1,39 @@
 //Required some Modules
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
 
 //Required some Components or functions
-import { list } from "./apiEvent";
+//import { list } from "./apiEvent";
+import { fetchEvents, clearCurrentEvent } from "../redux/actions/eventActions";
+import {AuthUser} from "../redux/actions/userActions"
+
 
 
 //Events Class Component
 class Events extends Component {
-    constructor() {
-        super();
-        this.state = {
-            events: []
-        };
-    }
+    
 
     //to set the events to the state 
     componentDidMount() {
-        list().then(data => {
+            console.log(this.props)
+            this.props.fetchEvents()
+            this.props.AuthUser()
+            this.props.clearCurrentEvent()
+            
+       /* list().then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
                 console.log(data)
                 this.setState({ events: data });
             }
-        });
+        }); */
     }
+
+    
 
     //Render events method
     renderEvents = events => (
@@ -77,7 +85,8 @@ class Events extends Component {
     );
 
     render() {
-        const { events } = this.state;
+        
+        const events = this.props.events;
         return (
             <div className="container box box-shadow">
                 <h2 className="title">Recent Events</h2>
@@ -87,4 +96,16 @@ class Events extends Component {
     }
 }
 
-export default Events;
+Events.propTypes = {
+    fetchEvents: PropTypes.func.isRequired,
+    AuthUser: PropTypes.func.isRequired,
+    clearCurrentEvent: PropTypes.func.isRequired,
+    events: PropTypes.array.isRequired
+    
+}
+
+const mapStatetoProps = state => ({
+    events: state.Allevents.events
+})
+
+export default connect(mapStatetoProps, { fetchEvents, AuthUser, clearCurrentEvent})(Events);

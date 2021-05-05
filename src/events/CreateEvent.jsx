@@ -61,7 +61,7 @@ class CreateEvent extends Component {
         if (this.isValid()) {
             const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
-            console.log(this.postData)
+        
             create(userId, token, this.postData).then(data => {
                 if (data.error) this.setState({ error: data.error , loading: false});
                 else {

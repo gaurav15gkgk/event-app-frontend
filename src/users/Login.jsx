@@ -1,9 +1,12 @@
 //Import Some Modules
 import React, { Component } from "react";
 import {  Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from 'react-redux'
 
 //Import some functions or Components
-import { loginuser, authenticate} from "../auth";
+import {  authenticate} from "../auth";
+import { loginUser } from "../redux/actions/userActions"
 
 //LOgin user Class Component
 class Login extends Component {
@@ -15,7 +18,7 @@ class Login extends Component {
             error: "",
             redirectToReferer: false,
             loading: false,
-            recaptcha: false
+           
         };
     }
 
@@ -34,17 +37,28 @@ class Login extends Component {
             email,
             hashed_password : password
         };
-       
-        loginuser(user).then(data => {
+        
+        this.props.loginUser(user).then(data => {
             if (data.error) {
                 this.setState({ error: data.error, loading: false });
             } else {
                 // authenticate
                 authenticate(data, () => {
+                    console.log(data)
                     this.setState({ redirectToReferer: true });
                 });
             }
-        });
+        })
+        //loginuser(user).then(data => {
+            //if (data.error) {
+               // this.setState({ error: data.error, loading: false });
+            //} else {
+                // authenticate
+               // authenticate(data, () => {
+               //     this.setState({ redirectToReferer: true });
+               // });
+           // }
+        //});
         
     };
 
@@ -118,4 +132,15 @@ class Login extends Component {
         );
     }
 }
-export default Login;
+
+Login.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    
+}
+
+const mapStatetoProps = state => ({
+    user: state.LoggedinUser.user
+})
+
+export default connect(mapStatetoProps, { loginUser})(Login);
