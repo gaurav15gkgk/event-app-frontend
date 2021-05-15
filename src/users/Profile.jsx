@@ -49,7 +49,7 @@ class Profile extends Component {
     
     //load events by a particular user
     loadEvents = userId => {
-        const token = isAuthenticated().token;
+        const token = isAuthenticated().payload.token;
         listByUser(userId, token).then(data => {
           if (data.error) {
             console.log(data.error);
