@@ -25,7 +25,7 @@ class CreateEvent extends Component {
 
     //to set the state of the user when this component loaded
     componentDidMount() {
-        this.setState({ user: isAuthenticated().user });
+        this.setState({ user: isAuthenticated().payload.user });
     }
 
     //Some Client side validation
@@ -59,8 +59,8 @@ class CreateEvent extends Component {
         }
 
         if (this.isValid()) {
-            const userId = isAuthenticated().user._id;
-            const token = isAuthenticated().token;
+            const userId = isAuthenticated().payload.user._id;
+            const token = isAuthenticated().payload.token;
         
             create(userId, token, this.postData).then(data => {
                 if (data.error) this.setState({ error: data.error , loading: false});
